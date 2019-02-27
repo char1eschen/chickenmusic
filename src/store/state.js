@@ -1,5 +1,10 @@
 const state = {
-  singer: {}
+  singer: {},
+  playing: false,
+  fullScreen: false,
+  playlist: [],
+  sequenceList: [],
+  mode: 
 }
 
 export default state
