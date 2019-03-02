@@ -6,11 +6,11 @@ export function getLyric(mid) {
 
   const data = Object.assign({}, commonParams, {
     songmid: mid,
+    pcachetime: +new Date(),
     platform: 'yqq',
     hostUin: 0,
     needNewCode: 0,
-    categoryId: 10000000,
-    pcachetime: +new Date(),
+    g_tk: 67232076,
     format: 'json'
   })
 
@@ -21,14 +21,13 @@ export function getLyric(mid) {
   })
 }
 
-// get Vkey
-export function getVkey(songmid) {
-  const url = '/api/vkey'
+export function getSongVkey(mid) {
+  const url = '/api/getSongVkey'
 
   const data = Object.assign({}, commonParams, {
-    songmid: songmid,
-    filename: `C400${songmid}.m4a`,
-    guid: '1472133172',
+    songmid: mid,
+    filename: `C400${mid}.m4a`,
+    guid: '8111492019',
     uin: 0,
     platform: 'yqq',
     needNewCode: 0,
