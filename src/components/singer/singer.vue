@@ -1,6 +1,6 @@
 <template>
-  <div class="singer" ref="list">
-    <listview @select="selectSinger" :data="singers"></listview>
+  <div class="singer" ref="singer">
+    <listview @select="selectSinger" :data="singers" ref="list"></listview>
     <router-view></router-view>
   </div>
 </template>
@@ -29,7 +29,7 @@
     methods: {
       handlePlaylist(playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
-        this.$refs.list.style.bottom = bottom
+        this.$refs.singer.style.bottom = bottom
         this.$refs.list.refresh()
       },
       selectSinger(singer) {

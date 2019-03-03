@@ -55,3 +55,10 @@ function filterSinger(singer) {
   })
   return ret.join('/')
 }
+
+export function formatSongList(res) {
+  res = res.replace(/jsonCallback/, '')
+  res = res.replace(/\(/g, '')
+  res = res.replace(/\)/g, '')
+  return JSON.parse(res)
+}
