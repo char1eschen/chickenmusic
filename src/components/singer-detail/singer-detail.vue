@@ -10,6 +10,7 @@
   import {ERR_OK} from 'api/config'
   import {createSong} from 'common/js/song'
   import MusicList from 'components/music-list/music-list'
+  import {getSongVkey} from 'api/song'
 
   export default {
     components: {
@@ -33,7 +34,6 @@
     },
     created() {
       this._getDetail()
-      console.log(this.singer)
     },
     methods: {
       _getDetail() {
@@ -49,10 +49,16 @@
       },
       _normalizeSongs(list) {
         let ret = []
+        let songVkey = ''
         list.forEach((item) => {
           let {musicData} = item
           if (musicData.songid && musicData.albummid) {
-            ret.push(createSong(musicData))
+            getSongVkey(musicData.songmid).then((res) => {
+              if (res.code === ERR_OK) {
+                songVkey = res.data.items[0].vkey
+              }
+            })
+            ret.push(createSong(musicData, songVkey))
           }
         })
         return ret
