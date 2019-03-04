@@ -57,8 +57,11 @@ function filterSinger(singer) {
 }
 
 export function formatSongList(res) {
-  res = res.replace(/jsonCallback/, '')
-  res = res.replace(/\(/g, '')
-  res = res.replace(/\)/g, '')
-  return JSON.parse(res)
+  // res = res.replace(/jsonCallback/, '')
+  // res = res.replace(/\(/g, '')
+  // res = res.replace(/\)/g, '')
+  // return JSON.parse(res)
+  let start = res.indexOf('(')
+  let end = res.lastIndexOf(')')
+  return JSON.parse(res.substring(start + 1, end))
 }

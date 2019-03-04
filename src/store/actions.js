@@ -29,3 +29,28 @@ export const randomPlay = function ({commit}, {list}) {
   commit(types.SET_PLAYLIST, randomList)
   commit(types.SET_CURRENT_INDEX, 0)
 }
+
+export const insertSong = function ({commit, state}, song) {
+  let playlist = state.playlist
+  let sequenceList = state.sequencelist
+  let currentIndex = state.currentIndex
+  // get current song
+  let currentSong = playlist[currentIndex]
+  // find if currentlist has the song need to be inserted,
+  // and return index
+  let fpIndex = findIndex(playlist, song)
+  // insert a song, currentIndex nend +1
+  currentIndex++
+  // insert a song
+  playlist.splice(currentIndex, 0, song)
+  // if has the song
+  if (fpIndex > -1) {
+    // if currentIndex is after the current song's index
+    if (currentIndex > fpIndex) {
+      playlist.splice(fpIndex, 1)
+      currentIndex--
+    } else {
+      playlist.splice(fpIndex + 1, 1)
+    }
+  }
+}

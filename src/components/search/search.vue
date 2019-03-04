@@ -1,17 +1,61 @@
 <template>
   <div class="search">
     <div class="search-box-wrapper">
-      <SearchBox></SearchBox>
+      <SearchBox ref="searchbox" @query="onQueryChange"></SearchBox>
     </div>
+    <div ref="shortcutWrapper" class="shortcut-wrapper" v-show="!query">
+      <div ref="shortcut" class="shortcut">
+        <div class="hot-key">
+          <h1 class="title">热门搜索</h1>
+          <ul>
+            <li @click="addQuery(item.k)" class="item" v-for="item in hotKey">
+              <span>{{item.k}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="search-result" v-show="query">
+      <Suggest :query="query"></Suggest>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import SearchBox from 'base/search-box/search-box'
+  import {getHotKey} from 'api/search'
+  import {ERR_OK} from 'api/config'
+  import Suggest from 'components/suggest/suggest'
 
   export default {
+    created() {
+      this._getHotKey()
+    },
+    data() {
+      return {
+        hotKey: [],
+        query: ''
+      }
+    },
+    methods: {
+      addQuery(query) {
+        this.$refs.searchbox.setQuery(query)
+      },
+      onQueryChange(query) {
+        this.query = query
+      },
+      _getHotKey() {
+        getHotKey().then((res) => {
+          if (res.code === ERR_OK) {
+            this.hotKey = res.data.hotkey.slice(0, 10)
+          }
+        })
+      }
+    },
     components: {
-      SearchBox
+      SearchBox,
+      Suggest
     }
   }
 </script>
