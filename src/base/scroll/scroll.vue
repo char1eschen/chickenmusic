@@ -28,6 +28,10 @@
       pullup: {
         type: Boolean,
         default: false
+      },
+      beforeScroll: {
+        type: Boolean,
+        default: false
       }
     },
     mounted() {
@@ -59,6 +63,12 @@
             }
           })
         }
+
+        if (this.beforeScroll) {
+          this.scroll.on('beforeScroll', () => {
+            this.$emit('beforeScroll')
+          })
+        }
       },
       enable() {
         this.scroll && this.scroll.enable()
@@ -69,7 +79,7 @@
       refresh() {
         this.scroll && this.scroll.refresh()
       },
-      scrollTo () {
+      scrollTo() {
         this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
       },
       scrollToElement() {

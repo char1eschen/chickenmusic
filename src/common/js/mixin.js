@@ -23,3 +23,27 @@ export const playlistMixin = {
     }
   }
 }
+
+// export const suggestlistMixin = {
+//   // computed: {
+//   //   suggestlist(data) {
+//   //     return data.song.list
+//   //   }
+//   // },
+//   mounted() {
+//     this.handleSuggestlist(this.result)
+//   },
+//   activated() {
+//     this.handleSuggestlist(this.result)
+//   },
+//   watch: {
+//     suggestlist(newVal) {
+//       this.handleSuggestlist(newVal)
+//     }
+//   },
+//   methods: {
+//     handleSuggestlist() {
+//       throw new Error('component must implement handleSuggestlist method')
+//     }
+//   }
+// }
