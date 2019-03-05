@@ -293,7 +293,9 @@
       getLyric() {
         this.currentSong.getLyric().then((lyric) => {
           this.currentLyric = new Lyric(lyric, this.handleLyric)
-          if (this.playing) {
+          // if the song is playing
+          // if (this.playing) {
+          if (this.currentTime > 0) {
             this.currentLyric.play()
           }
         }).catch(() => {
