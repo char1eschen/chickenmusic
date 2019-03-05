@@ -33,13 +33,11 @@
   import Singer from 'common/js/singer'
   import {mapMutations, mapActions} from 'vuex'
   import NoResult from 'base/no-result/no-result'
-  // import {suggestlistMixin} from 'common/js/mixin'
 
   const TYPE_SINGER = 'singer'
   const PERPAGE = 20
 
   export default {
-    // mixins: [suggestlistMixin],
     props: {
       query: {
         type: String,
@@ -60,11 +58,6 @@
       }
     },
     methods: {
-      // handleSuggestlist(result) {
-      //   const bottom = result.length > 0 ? '60px' : ''
-      //   this.$refs.suggest.style.bottom = bottom
-      //   this.$refs.scroll.refresh()
-      // },
       search() {
         this.page = 1
         this.hasMore = true
@@ -116,6 +109,9 @@
           this.insertSong(item)
         }
         this.$emit('select')
+      },
+      refresh() {
+        this.$refs.suggest.refresh()
       },
       listScroll() {
         this.$emit('listScroll')
