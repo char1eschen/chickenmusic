@@ -21,7 +21,7 @@
 
   export default {
     props: {
-      precent: {
+      percent: {
         type: Number,
         default: 0
       }
