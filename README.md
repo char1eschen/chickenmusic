@@ -1,4 +1,4 @@
-# Chicken Music
+# Puppy Music
 
 > A mobile web music player
 

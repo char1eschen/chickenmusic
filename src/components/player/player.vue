@@ -237,7 +237,7 @@
         if (!this.songReady) {
           return
         }
-        if (this.playList.length === 1) {
+        if (this.playlist.length === 1) {
           this.loop()
         } else {
           let index = this.currentIndex + 1
@@ -391,7 +391,7 @@
         this.$refs.middleL.style[transitionDuration] = `${time}ms`
       },
       showPlaylist() {
-        this.refs.playlist.show()
+        this.$refs.playlist.show()
       },
       _pad(num, n = 2) {
         let len = num.toString().length
@@ -426,6 +426,9 @@
     },
     watch: {
       currentSong(newSong, oldSong) {
+        if (!newSong.id) {
+          return
+        }
         // if id doesn't change
         if (newSong.id === oldSong.id) {
           return

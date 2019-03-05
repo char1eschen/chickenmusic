@@ -1,7 +1,7 @@
 <template>
   <div class="m-header">
     <div class="icon"></div>
-    <div class="text">Chicken Music</div>
+    <div class="text">Puppy Music</div>
   </div>
 </template>
 
@@ -21,6 +21,7 @@
     text-align: center
     color: $color-theme
     font-size: 0
+
     .icon
       display: inline-block
       vertical-align: top
@@ -30,15 +31,18 @@
       margin-right: 9px
       bg-image('logo')
       background-size: 30px 32px
+
     .text
       display: inline-block
       vertical-align: top
       line-height: 44px
       font-size: $font-size-large
+
     .mine
       position: absolute
       top: 0
       right: 0
+
       .icon-mine
         display: block
         padding: 12px
