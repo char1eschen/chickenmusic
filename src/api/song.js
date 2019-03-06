@@ -28,7 +28,7 @@ export function getSongVkey(mid) {
     songmid: mid,
     filename: `C400${mid}.m4a`,
     guid: '8111492019',
-    // uin: 0,
+    uin: 0,
     platform: 'yqq',
     needNewCode: 0,
     cid: '205361747',

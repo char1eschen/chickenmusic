@@ -25,12 +25,17 @@ var app = express()
 
 var apiRoutes = express.Router()
 
+const ReqHeader = {
+  referer: 'https://c.y.qq.com/',
+  host: 'c.y.qq.com'
+}
+
 apiRoutes.get('/getDiscList', function (req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
   axios.get(url, {
     headers: {
-      referer: 'https://c.y.qq.com/',
-      host: 'c.y.qq.com'
+      referer: ReqHeader.referer,
+      host: ReqHeader.host
     },
     params: req.query
   }).then((response) => {
@@ -45,8 +50,8 @@ apiRoutes.get('/lyric', function (req, res) {
 
   axios.get(url, {
     headers: {
-      referer: 'https://c.y.qq.com/',
-      host: 'c.y.qq.com'
+      referer: ReqHeader.referer,
+      host: ReqHeader.host
     },
     params: req.query
   }).then((response) => {
@@ -69,8 +74,8 @@ apiRoutes.get('/getSongVkey', function (req, res) {
 
   axios.get(url, {
     headers: {
-      referer: 'https://c.y.qq.com/',
-      host: 'c.y.qq.com'
+      referer: ReqHeader.referer,
+      host: ReqHeader.host
     },
     params: req.query
   }).then((response) => {
@@ -85,8 +90,8 @@ apiRoutes.get('/songList', function (req, res) {
 
   axios.get(url, {
     headers: {
-      referer: 'https://c.y.qq.com/',
-      host: 'c.y.qq.com'
+      referer: ReqHeader.referer,
+      host: ReqHeader.host
     },
     params: req.query
   }).then((response) => {
@@ -99,6 +104,22 @@ apiRoutes.get('/songList', function (req, res) {
       }
     }
     res.json(ret)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+apiRoutes.get('/getSearch', function(req, res) {
+  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
+
+  axios.get(url, {
+    headers: {
+      referer: ReqHeader.referer,
+      host: ReqHeader.host
+    },
+    params: req.query
+  }).then((response) => {
+    res.json(response.data)
   }).catch((e) => {
     console.log(e)
   })
