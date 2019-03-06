@@ -29,6 +29,8 @@ export const randomPlay = function ({commit}, {list}) {
   let randomList = shuffle(list)
   commit(types.SET_PLAYLIST, randomList)
   commit(types.SET_CURRENT_INDEX, 0)
+  commit(types.SET_FULL_SCREEN, true)
+  commit(types.SET_PLAYING_STATE, true)
 }
 
 export const insertSong = function ({commit, state}, song) {
@@ -115,15 +117,15 @@ export const deleteSong = function ({commit, state}, song) {
   // }
 }
 
-export const savePlayHistory = function ({commit}, song) {
-  commit(types.SET_PLAY_HISTORY, savePlay(song))
-}
-
 export const deleteSongList = function ({commit}) {
   commit(types.SET_PLAYLIST, [])
   commit(types.SET_SEQUENCE_LIST, [])
   commit(types.SET_CURRENT_INDEX, -1)
   commit(types.SET_PLAYING_STATE, false)
+}
+
+export const savePlayHistory = function ({commit}, song) {
+  commit(types.SET_PLAY_HISTORY, savePlay(song))
 }
 
 export const saveFavoriteList = function ({commit}, song) {

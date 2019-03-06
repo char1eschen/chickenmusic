@@ -29,6 +29,7 @@ function deleteFromArray(arr, compare) {
     arr.splice(index, 1)
   }
 }
+
 export function saveSearch(query) {
   let searches = storage.get(SEARCH_KEY, [])
   insertArray(searches, query, (item) => {
