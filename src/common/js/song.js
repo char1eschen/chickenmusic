@@ -41,6 +41,7 @@ export function createSong(musicData, vkey) {
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
+    // this url can not be used outside china mainland
     // url: `http://dl.stream.qqmusic.qq.com/http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=8111492019&vkey=${vkey}&uin=0&fromtag=38`
     url: `https://api.bzqll.com/music/tencent/url?key=579621905&id=${musicData.songmid}`
   })
@@ -58,10 +59,6 @@ function filterSinger(singer) {
 }
 
 export function formatSongList(res) {
-  // res = res.replace(/jsonCallback/, '')
-  // res = res.replace(/\(/g, '')
-  // res = res.replace(/\)/g, '')
-  // return JSON.parse(res)
   let start = res.indexOf('(')
   let end = res.lastIndexOf(')')
   return JSON.parse(res.substring(start + 1, end))
