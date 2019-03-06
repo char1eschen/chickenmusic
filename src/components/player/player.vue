@@ -37,8 +37,9 @@
               <div v-if="currentLyric">
                 <p ref="lyricLine"
                    class="text"
-                   :class="{'current': currentLineNum===index}"
-                   v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
+                   :class="{'current': currentLineNum === index}"
+                   v-for="(line,index) in currentLyric.lines"
+                   :key="line.time">{{line.txt}}</p>
               </div>
             </div>
           </scroll>
@@ -294,8 +295,7 @@
         this.currentSong.getLyric().then((lyric) => {
           this.currentLyric = new Lyric(lyric, this.handleLyric)
           // if the song is playing
-          // if (this.playing) {
-          if (this.currentTime > 0) {
+          if (this.playing) {
             this.currentLyric.play()
           }
         }).catch(() => {
