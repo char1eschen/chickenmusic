@@ -37,9 +37,8 @@
               <div v-if="currentLyric">
                 <p ref="lyricLine"
                    class="text"
-                   :class="{'current': currentLineNum === index}"
-                   v-for="(line,index) in currentLyric.lines"
-                   :key="line.time">{{line.txt}}</p>
+                   :class="{'current': currentLineNum ===index}"
+                   v-for="(line,index) in currentLyric.lines">{{line.txt}}</p>
               </div>
             </div>
           </scroll>
@@ -70,7 +69,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon" @click="toggleFavorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
+              <i @click="toggleFavorite(currentSong)" class="icon" :class="getFavoriteIcon(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -102,20 +101,18 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import animations from 'create-keyframe-animation'
-  import Lyric from 'lyric-parser'
   import {mapGetters, mapMutations, mapActions} from 'vuex'
+  import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
-  import {playMode} from 'common/js/config'
-  import {playerMixin} from 'common/js/mixin'
   import ProgressBar from 'base/progress-bar/progress-bar'
   import ProgressCircle from 'base/progress-circle/progress-circle'
+  import {playMode} from 'common/js/config'
+  import Lyric from 'lyric-parser'
   import Scroll from 'base/scroll/scroll'
+  import {playerMixin} from 'common/js/mixin'
   import Playlist from 'components/playlist/playlist'
-
-  const transform = prefixStyle(`transform`)
-  const transitionDuration = prefixStyle(`transitionDuration`)
-
+  const transform = prefixStyle('transform')
+  const transitionDuration = prefixStyle('transitionDuration')
   export default {
     mixins: [playerMixin],
     data() {
@@ -146,9 +143,9 @@
         return this.currentTime / this.currentSong.duration
       },
       ...mapGetters([
+        'currentIndex',
         'fullScreen',
-        'playing',
-        'currentIndex'
+        'playing'
       ])
     },
     created() {
@@ -170,10 +167,10 @@
             transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
           },
           60: {
-            transform: `translate3d(0,0, 0) scale(1.1)`
+            transform: `translate3d(0, 0, 0) scale(1.1)`
           },
           100: {
-            transform: `translate3d(0,0, 0) scale(1)`
+            transform: `translate3d(0, 0, 0) scale(1)`
           }
         }
 
@@ -186,23 +183,20 @@
             easing: 'linear'
           }
         })
-
-        // start animation
         animations.runAnimation(this.$refs.cdWrapper, 'move', done)
       },
       afterEnter() {
-        // stop animation
         animations.unregisterAnimation('move')
         this.$refs.cdWrapper.style.animation = ''
       },
       leave(el, done) {
         this.$refs.cdWrapper.style.transition = 'all 0.4s'
         const {x, y, scale} = this._getPosAndScale()
-        this.$refs.cdWrapper.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+        this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
         this.$refs.cdWrapper.addEventListener('transitionend', done)
       },
       afterLeave() {
-        this.$refs.cdWrapper.style.animation = ''
+        this.$refs.cdWrapper.style.transition = ''
         this.$refs.cdWrapper.style[transform] = ''
       },
       togglePlaying() {
@@ -224,6 +218,7 @@
       loop() {
         this.$refs.audio.currentTime = 0
         this.$refs.audio.play()
+        this.setPlayingState(true)
         if (this.currentLyric) {
           this.currentLyric.seek(0)
         }
@@ -320,8 +315,13 @@
         }
         this.playingLyric = txt
       },
+      showPlaylist() {
+        this.$refs.playlist.show()
+      },
       middleTouchStart(e) {
         this.touch.initiated = true
+        // if moving or not
+        this.touch.moved = false
         const touch = e.touches[0]
         this.touch.startX = touch.pageX
         this.touch.startY = touch.pageY
@@ -336,6 +336,9 @@
         if (Math.abs(deltaY) > Math.abs(deltaX)) {
           return
         }
+        if (!this.touch.moved) {
+          this.touch.moved = true
+        }
         const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
         const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
         this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
@@ -345,6 +348,9 @@
         this.$refs.middleL.style[transitionDuration] = 0
       },
       middleTouchEnd() {
+        if (!this.touch.moved) {
+          return
+        }
         let offsetWidth
         let opacity
         if (this.currentShow === 'cd') {
@@ -372,9 +378,6 @@
         this.$refs.middleL.style.opacity = opacity
         this.$refs.middleL.style[transitionDuration] = `${time}ms`
         this.touch.initiated = false
-      },
-      showPlaylist() {
-        this.$refs.playlist.show()
       },
       _pad(num, n = 2) {
         let len = num.toString().length
@@ -432,6 +435,13 @@
         this.$nextTick(() => {
           newPlaying ? audio.play() : audio.pause()
         })
+      },
+      fullScreen(newVal) {
+        if (newVal) {
+          setTimeout(() => {
+            this.$refs.lyricList.refresh()
+          }, 20)
+        }
       }
     },
     components: {
