@@ -1,8 +1,6 @@
 import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
 
-const debug = process.env.NODE_ENV !== 'production'
-
 import axios from 'axios'
 
 export function getHotKey() {
@@ -17,8 +15,7 @@ export function getHotKey() {
 }
 
 export function search(query, page, zhida, perpage) {
-  // const url = '/api/getSearch'
-  const url = debug ? '/api/getSearch' : 'http://music.rubychen.me/api/getSearch'
+  const url = '/api/getSearch'
 
   const data = Object.assign({}, commonParams, {
     g_tk: 1928093487,
