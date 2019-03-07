@@ -1,6 +1,11 @@
 # Puppy Music
 
-> A mobile web music player
+> A Vue.js project for music
+### Use
+* Vue.js
+* Vue-Cli
+* Vue-Router
+* Vuex
 
 ## Build Setup
 
