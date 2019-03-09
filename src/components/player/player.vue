@@ -35,8 +35,8 @@
           </div>
           <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
+              <div class="text" v-show="notLyric">纯音乐，请欣赏</div>
               <div v-if="currentLyric">
-                <div class="text" v-show="notLyric">纯音乐，请欣赏</div>
                 <p ref="lyricLine"
                    class="text"
                    :class="{'current': currentLineNum ===index}"
@@ -268,11 +268,8 @@
       },
       ready() {
         this.songReady = true
+        this.notLyric = false
         this.savePlayHistory(this.currentSong)
-        // if lyric playing before song
-        if (this.currentLyric && !this.isPureMusic) {
-          this.currentLyric.seek(this.currentTime * 1000)
-        }
       },
       error() {
         this.songReady = true
@@ -298,6 +295,7 @@
         }
       },
       getLyric() {
+        this.notLyric = false
         this.currentSong.getLyric().then((lyric) => {
           if (this.currentSong.lyric !== lyric) {
             return
@@ -424,6 +422,7 @@
     },
     watch: {
       currentSong(newSong, oldSong) {
+        this.notLyric = false
         if (!newSong.id) {
           return
         }
