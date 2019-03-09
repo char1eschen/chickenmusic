@@ -29,12 +29,14 @@
               </div>
             </div>
             <div class="playing-lyric-wrapper">
+              <div class="playing-lyric" v-show="notLyric">纯音乐，请欣赏</div>
               <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
           <scroll class="middle-r" ref="lyricList" :data="currentLyric && currentLyric.lines">
             <div class="lyric-wrapper">
               <div v-if="currentLyric">
+                <div class="text" v-show="notLyric">纯音乐，请欣赏</div>
                 <p ref="lyricLine"
                    class="text"
                    :class="{'current': currentLineNum ===index}"
@@ -111,6 +113,7 @@
   import Scroll from 'base/scroll/scroll'
   import {playerMixin} from 'common/js/mixin'
   import Playlist from 'components/playlist/playlist'
+
   const transform = prefixStyle('transform')
   const transitionDuration = prefixStyle('transitionDuration')
   export default {
@@ -123,7 +126,8 @@
         currentLyric: null,
         currentLineNum: 0,
         currentShow: 'cd',
-        playingLyric: ''
+        playingLyric: '',
+        notLyric: false
       }
     },
     computed: {
@@ -265,6 +269,10 @@
       ready() {
         this.songReady = true
         this.savePlayHistory(this.currentSong)
+        // if lyric playing before song
+        if (this.currentLyric && !this.isPureMusic) {
+          this.currentLyric.seek(this.currentTime * 1000)
+        }
       },
       error() {
         this.songReady = true
@@ -298,8 +306,13 @@
           // if the song is playing
           if (this.playing) {
             this.currentLyric.play()
+            // if lyric playing after song
+            if (this.currentTime > 0) {
+              this.currentLyric.seek(this.currentTime * 1000)
+            }
           }
         }).catch(() => {
+          this.notLyric = true
           this.currentLyric = null
           this.playingLyric = ''
           this.currentLineNum = 0
