@@ -423,11 +423,8 @@
     watch: {
       currentSong(newSong, oldSong) {
         this.notLyric = false
-        if (!newSong.id) {
-          return
-        }
         // if id doesn't change
-        if (newSong.id === oldSong.id) {
+        if (!newSong.id || newSong.id === oldSong.id) {
           return
         }
         if (this.currentLyric) {
